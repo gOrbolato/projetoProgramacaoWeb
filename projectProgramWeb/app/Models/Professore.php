@@ -12,48 +12,48 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class Aluno
+ * Class Professore
  * 
  * @property int $id
- * @property string $name
- * @property int $idade
+ * @property string $nome
  * @property string $cpf
+ * @property int $idade
  * @property string $telefone
- * @property Carbon $ano_letivo
+ * @property int $coordenador_id
  * @property string|null $deleted_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
+ * @property Coordenadore $coordenadore
  * @property Collection|Turma[] $turmas
- * @property Collection|FormRespAvaliaco[] $form_resp_avaliacos
  *
  * @package App\Models
  */
-class Aluno extends Model
+class Professore extends Model
 {
 	use SoftDeletes;
-	protected $table = 'alunos';
+	protected $table = 'professores';
 
 	protected $casts = [
 		'idade' => 'int',
-		'ano_letivo' => 'datetime'
+		'coordenador_id' => 'int'
 	];
 
 	protected $fillable = [
-		'name',
-		'idade',
+		'nome',
 		'cpf',
+		'idade',
 		'telefone',
-		'ano_letivo'
+		'coordenador_id'
 	];
+
+	public function coordenadore()
+	{
+		return $this->belongsTo(Coordenadore::class, 'coordenador_id');
+	}
 
 	public function turmas()
 	{
-		return $this->hasMany(Turma::class, 'id_aluno');
-	}
-
-	public function form_resp_avaliacos()
-	{
-		return $this->hasMany(FormRespAvaliaco::class, 'id_aluno');
+		return $this->hasMany(Turma::class, 'id_professor');
 	}
 }

@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('perguntas', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
-            $table->string('tipo_pergunta')->comment('este campo ira receber um enum para informar o tipo da pergunta');
+            $table->text('nome_pergunta');
+            $table->string('tipo_pergunta');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

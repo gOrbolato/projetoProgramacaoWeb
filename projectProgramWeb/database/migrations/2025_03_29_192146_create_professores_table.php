@@ -13,13 +13,18 @@ return new class extends Migration
     {
         Schema::create('professores', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_coordenador')->nullable();
-            $table->string('nome');
-            $table->string('telefone');
-            $table->string('idade');
-            $table->timestamps();
 
-            $table->foreign('id_coordenador', 'fk_coordenadores_professores')->references('id')->on('coordenadores');
+            $table->string('nome');
+            $table->string('cpf');
+            $table->integer('idade');
+            $table->string('telefone');
+
+            $table->unsignedBigInteger('coordenador_id');
+            $table->foreign('coordenador_id')->references('id')->on('coordenadores');
+
+
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 
@@ -28,9 +33,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('alunos', function (Blueprint $table){
-            $table->dropForeign('fk_coordenadores_professores');
-            $table->dropColumn('id_coordenador');
+        Schema::table('professores', function (Blueprint $table) {
+            $table->dropForeign(['coordenador_id']);
         });
         Schema::dropIfExists('professores');
     }
