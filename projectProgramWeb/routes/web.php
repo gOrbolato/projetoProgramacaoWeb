@@ -16,3 +16,17 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// acesso a um ID especifico
+Route::get('/alunos/create', [AlunoController::class, 'create'])->name('alunos.create');
+Route::post('/alunos', [AlunoController::class, 'store'])->name('alunos.store');
+
+// routes/web.php
+Route::get('/alunos/{id}', [AlunoController::class, 'show'])->name('alunos.show');
+
+// AlunoController.php
+public function show($id)
+{
+    $aluno = Aluno::find($id);
+    return response()->json($aluno);
+}
