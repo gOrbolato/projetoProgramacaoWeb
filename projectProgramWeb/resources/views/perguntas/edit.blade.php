@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Criar Pergunta</title>
+    <title>Editar Pergunta</title>
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 <body>
-    <h1>Criar Nova Pergunta</h1>
+    <h1>Editar Pergunta</h1>
 
-    <form action="{{ route('perguntas.store') }}" method="POST">
+    <form action="{{ route('perguntas.update', $pergunta->id) }}" method="POST">
         @csrf
+        @method('PUT')
         <label for="titulo">Título:</label>
-        <input type="text" name="titulo" id="titulo" required>
+        <input type="text" name="titulo" id="titulo" value="{{ $pergunta->titulo }}" required>
         <br>
         <label for="descricao">Descrição:</label>
-        <textarea name="descricao" id="descricao" required></textarea>
+        <textarea name="descricao" id="descricao" required>{{ $pergunta->descricao }}</textarea>
         <br>
-        <button type="submit">Salvar</button>
+        <button type="submit">Atualizar</button>
     </form>
 
     <script src="{{ asset('js/scripts.js') }}"></script>

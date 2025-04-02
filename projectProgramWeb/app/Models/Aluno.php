@@ -40,7 +40,7 @@ class Aluno extends Model
 	];
 
 	protected $fillable = [
-		'name',
+		'nome',
 		'idade',
 		'cpf',
 		'telefone',

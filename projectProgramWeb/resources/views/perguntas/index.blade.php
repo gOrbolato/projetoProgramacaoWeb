@@ -1,37 +1,29 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Perguntas</title>
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+</head>
+<body>
+    <h1>Lista de Perguntas</h1>
+    <a href="{{ route('perguntas.create') }}">Criar Nova Pergunta</a>
 
-@section('title', 'Lista de Questionários')
+    <ul>
+        @foreach ($perguntas as $pergunta)
+            <li>
+                {{ $pergunta->titulo }}
+                <a href="{{ route('perguntas.edit', $pergunta->id) }}">Editar</a>
+                <form action="{{ route('perguntas.destroy', $pergunta->id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">Excluir</button>
+                </form>
+            </li>
+        @endforeach
+    </ul>
 
-@section('content')
-<div class="container">
-    <h1>Lista de Questionários</h1>
-    <a href="{{ route('perguntas.create') }}">Criar Novo Questionário</a>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Turma</th>
-                <th>Pergunta 1</th>
-                <th>Pergunta 2</th>
-                <th>Pergunta 3</th>
-                <th>Decisão do Coordenador</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($perguntas as $pergunta)
-            <tr>
-                <td>{{ $pergunta->id }}</td>
-                <td>{{ $pergunta->turma }}</td>
-                <td>{{ $pergunta->pergunta1 }}</td>
-                <td>{{ $pergunta->pergunta2 }}</td>
-                <td>{{ $pergunta->pergunta3 }}</td>
-                <td>{{ $pergunta->pergunta4 }}</td>
-                <td>{{ $pergunta->pergunta5 }}</td>
-                <td>{{ $pergunta->pergunta6 }}</td>
-                <td>{{ ucfirst($pergunta->aprovacao) }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
-@endsection
+    <script src="{{ asset('js/scripts.js') }}"></script>
+</body>
+</html>
