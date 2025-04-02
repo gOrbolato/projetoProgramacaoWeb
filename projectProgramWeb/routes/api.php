@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\AlunoController;
+use App\Http\Controllers\CoordenadorController;
 use App\Http\Controllers\PerguntaController;
+use App\Http\Controllers\ProfessorController;
+use App\Http\Controllers\TurmaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,4 +36,25 @@ Route::prefix('/alunos')->group(function () {
     Route::post('criar', [AlunoController::class, 'store']);
     Route::put('atualizar/{id}', [AlunoController::class, 'update']);
     Route::delete('deletar/{id}', [AlunoController::class, 'destroy']);
+});
+
+Route::prefix('/coordenadores')->group(function () {
+    Route::get('listar', [CoordenadorController::class, 'index']);
+    Route::post('criar', [CoordenadorController::class, 'store']);
+    Route::put('atualizar/{id}', [CoordenadorController::class, 'update']);
+    Route::delete('deletar/{id}', [CoordenadorController::class, 'destroy']);
+});
+
+Route::prefix('/professores')->group(function () {
+    Route::get('listar', [ProfessorController::class, 'index']);
+    Route::post('criar', [ProfessorController::class, 'store']);
+    Route::put('atualizar/{id}', [ProfessorController::class, 'update']);
+    Route::delete('deletar/{id}', [ProfessorController::class, 'destroy']);
+});
+
+Route::prefix('/Turmas')->group(function () {
+    Route::get('listar', [TurmaController::class, 'index']);
+    Route::post('criar', [TurmaController::class, 'store']);
+    Route::put('atualizar/{id}', [TurmaController::class, 'update']);
+    Route::delete('deletar/{id}', [TurmaController::class, 'destroy']);
 });

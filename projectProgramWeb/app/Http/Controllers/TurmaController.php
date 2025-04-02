@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
+use App\Models\Turma;
 use Illuminate\Http\Request;
 
 class TurmaController extends Controller
@@ -11,7 +13,16 @@ class TurmaController extends Controller
      */
     public function index()
     {
-        //
+        $turmas = Turma::with([
+            'coordenadore:id,nome',
+            'professore:id,nome',
+            'aluno:id,nome'
+        ])
+            ->select('id', 'nome_turma', 'id_aluno', 'id_professor', 'id_coordenador')
+            ->get();
+
+
+        return response()->json(ApiResponse::success(['turmas' =>  $turmas]), 200);
     }
 
     /**

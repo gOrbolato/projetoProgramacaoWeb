@@ -106,11 +106,11 @@ class AlunoController extends Controller
             $aluno = aluno::find($request->id);
 
             $aluno->update([
-                'name' => strtoupper($request->name ?? $aluno->nome_pergunta),
-                'idade' => $request->idade ?? $aluno->tipo_pergunta,
-                'cpf' => $request->cpf ?? $aluno->tipo_pergunta,
-                'telefone' => $request->telefone ?? $aluno->tipo_pergunta,
-                'ano_letivo' => $request->ano_letivo ?? $aluno->tipo_pergunta,
+                'name' => strtoupper($request->name ?? $aluno->telefone),
+                'idade' => $request->idade ?? $aluno->idade,
+                'cpf' => $request->cpf ?? $aluno->cpf,
+                'telefone' => $request->telefone ?? $aluno->telefone,
+                'ano_letivo' => $request->ano_letivo ?? $aluno->ano_letivo,
             ]);
 
             DB::commit();
@@ -137,7 +137,7 @@ class AlunoController extends Controller
             return response()->json(ApiResponse::success(), 200);
         } catch (\Throwable $th) {
             DB::rollBack();
-            return response()->json(ApiResponse::error('Falha ao deletar pergunta', '0003'), 400);
+            return response()->json(ApiResponse::error('Falha ao deletar aluno', '0003'), 400);
         }
     }
 }
