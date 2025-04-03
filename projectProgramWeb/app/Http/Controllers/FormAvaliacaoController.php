@@ -34,7 +34,9 @@ class FormAvaliacaoController extends Controller
      */
     public function create()
     {
-        //
+        $turmas = Turma::all(['id', 'nome_turma']);
+        $perguntas = Pergunta::all(['id', 'nome_pergunta']);
+        return view('form_avaliacao.create', compact('turmas', 'perguntas'));
     }
 
     /**

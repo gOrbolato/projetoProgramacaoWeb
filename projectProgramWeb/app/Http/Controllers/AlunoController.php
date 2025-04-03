@@ -19,9 +19,8 @@ class AlunoController extends Controller
      */
     public function index()
     {
-        $alunos  = Aluno::all()->select('name', 'idade', 'cpf', 'telefone', 'ano_letivo');
-
-        return response()->json(ApiResponse::success(['alunos' =>  $alunos]), 200);
+        $alunos = Aluno::all();
+        return view('alunos.index', compact('alunos'));
     }
 
     /**
@@ -29,7 +28,7 @@ class AlunoController extends Controller
      */
     public function create()
     {
-        //
+        return view('alunos.create');
     }
 
     /**

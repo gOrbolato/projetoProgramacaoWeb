@@ -12,11 +12,11 @@
     <form action="{{ route('perguntas.update', $pergunta->id) }}" method="POST">
         @csrf
         @method('PUT')
-        <label for="titulo">Título:</label>
-        <input type="text" name="titulo" id="titulo" value="{{ $pergunta->titulo }}" required>
+        <label for="nome_pergunta">Nome da Pergunta:</label>
+        <input type="text" name="nome_pergunta" id="nome_pergunta" value="{{ $pergunta->nome_pergunta }}" required>
         <br>
-        <label for="descricao">Descrição:</label>
-        <textarea name="descricao" id="descricao" required>{{ $pergunta->descricao }}</textarea>
+        <label for="tipo_pergunta">Tipo da Pergunta:</label>
+        <input type="text" name="tipo_pergunta" id="tipo_pergunta" value="{{ $pergunta->tipo_pergunta }}" required>
         <br>
         <button type="submit">Atualizar</button>
     </form>

@@ -1,21 +1,15 @@
+<!-- resources/views/layouts/app.blade.php -->
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Sistema Escolar')</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <title>@yield('title')</title>
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 <body>
     <header>
-        <nav>
-            <ul>
-                <li><a href="{{ route('alunos.index') }}">Alunos</a></li>
-                <li><a href="{{ route('professores.index') }}">Professores</a></li>
-                <li><a href="{{ route('coordenadores.index') }}">Coordenadores</a></li>
-                <li><a href="{{ route('perguntas.index') }}">Perguntas</a></li>
-            </ul>
-        </nav>
+        <h1>Meu Sistema</h1>
     </header>
 
     <main>
@@ -23,9 +17,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2023 Sistema Escolar</p>
+        <p>&copy; 2023 Meu Sistema</p>
     </footer>
-
-    <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

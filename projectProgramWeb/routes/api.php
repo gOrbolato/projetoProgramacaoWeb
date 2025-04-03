@@ -6,7 +6,6 @@ use App\Http\Controllers\FormAvaliacaoController;
 use App\Http\Controllers\PerguntaController;
 use App\Http\Controllers\ProfessorController;
 use App\Http\Controllers\TurmaController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*

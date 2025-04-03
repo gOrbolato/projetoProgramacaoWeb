@@ -31,7 +31,8 @@ class ProfessorController extends Controller
      */
     public function create()
     {
-        //
+        $coordenadores = Coordenadore::all(['id', 'nome']);
+        return view('professores.create', compact('coordenadores'));
     }
 
     /**
@@ -82,7 +83,9 @@ class ProfessorController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $professor = Professore::findOrFail($id);
+        $coordenadores = Coordenadore::all(['id', 'nome']);
+        return view('professores.edit', compact('professor', 'coordenadores'));  
     }
 
     /**

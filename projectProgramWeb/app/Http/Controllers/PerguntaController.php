@@ -14,20 +14,20 @@ class PerguntaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $perguntas  = Pergunta::all()->select('nome_pergunta');
 
-        return response()->json(ApiResponse::success(['perguntas' =>  $perguntas]), 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+     public function index()
+     {
+         $perguntas = Pergunta::all();
+         return view('perguntas.index', compact('perguntas'));
+     }
+ 
+     /**
+      * Show the form for creating a new resource.
+      */
+     public function create()
+     {
+         return view('perguntas.create');
+     }
 
     /**
      * Store a newly created resource in storage.

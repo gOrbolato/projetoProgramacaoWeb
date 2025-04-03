@@ -1,32 +1,40 @@
 @extends('layouts.app')
 
-@section('title', 'Lista de Coordenadores')
+@section('title, 'Lista de Coordenadores')
 
 @section('content')
-<div class="container">
     <h1>Lista de Coordenadores</h1>
-    <a href="{{ route('coordenadores.create') }}">Cadastrar Novo Coordenador</a>
+    <a href="{{ route('coordenadores.create') }}">Criar Novo Coordenador</a>
+
     <table>
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Nome</th>
                 <th>Idade</th>
+                <th>CPF</th>
                 <th>Telefone</th>
-                <th>Departamento</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($coordenadores as $coordenador)
-            <tr>
-                <td>{{ $coordenador->id }}</td>
-                <td>{{ $coordenador->nome }}</td>
-                <td>{{ $coordenador->idade }}</td>
-                <td>{{ $coordenador->telefone }}</td>
-                <td>{{ $coordenador->departamento }}</td>
-            </tr>
+                <tr>
+                    <td>{{ $coordenador->nome }}</td>
+                    <td>{{ $coordenador->idade }}</td>
+                    <td>{{ $coordenador->cpf }}</td>
+                    <td>{{ $coordenador->telefone }}</td>
+                    <td>
+                        <a href="{{ route('coordenadores.edit', $coordenador->id) }}">Editar</a>
+                        <form action="{{ route('coordenadores.destroy', $coordenador->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
             @endforeach
         </tbody>
     </table>
-</div>
+
+    <script src="{{ asset('js/scripts.js') }}"></script>
 @endsection

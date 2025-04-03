@@ -16,20 +16,20 @@ class CoordenadorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $coordenadores  = Coordenadore::all()->select('nome', 'idade', 'cpf', 'telefone');
 
-        return response()->json(ApiResponse::success(['coordenadores' =>  $coordenadores]), 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+     public function index()
+     {
+         $coordenadores = Coordenadore::all();
+         return view('coordenadores.index', compact('coordenadores'));
+     }
+ 
+     /**
+      * Show the form for creating a new resource.
+      */
+     public function create()
+     {
+         return view('coordenadores.create');
+     }
 
     /**
      * Store a newly created resource in storage.
