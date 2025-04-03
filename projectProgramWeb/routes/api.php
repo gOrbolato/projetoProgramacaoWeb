@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlunoController;
 use App\Http\Controllers\CoordenadorController;
+use App\Http\Controllers\FormAvaliacaoController;
 use App\Http\Controllers\PerguntaController;
 use App\Http\Controllers\ProfessorController;
 use App\Http\Controllers\TurmaController;
@@ -52,9 +53,16 @@ Route::prefix('/professores')->group(function () {
     Route::delete('deletar/{id}', [ProfessorController::class, 'destroy']);
 });
 
-Route::prefix('/Turmas')->group(function () {
+Route::prefix('/turmas')->group(function () {
     Route::get('listar', [TurmaController::class, 'index']);
     Route::post('criar', [TurmaController::class, 'store']);
     Route::put('atualizar/{id}', [TurmaController::class, 'update']);
     Route::delete('deletar/{id}', [TurmaController::class, 'destroy']);
+});
+
+Route::prefix('/form_avaliaco')->group(function () {
+    Route::get('listar', [FormAvaliacaoController::class, 'index']);
+    Route::post('criar', [FormAvaliacaoController::class, 'store']);
+    Route::put('atualizar/{id}', [FormAvaliacaoController::class, 'update']);
+    Route::delete('deletar/{id}', [FormAvaliacaoController::class, 'destroy']);
 });
