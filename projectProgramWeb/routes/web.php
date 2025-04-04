@@ -17,8 +17,8 @@ Route::prefix('/perguntas')->group(function () {
     Route::get('/', [PerguntaController::class, 'index'])->name('perguntas.index');
     Route::get('/criar', [PerguntaController::class, 'create'])->name('perguntas.create');
     Route::post('/criar', [PerguntaController::class, 'store'])->name('perguntas.store');
-    Route::get('/editar/{id}', [PerguntaController::class, 'edit'])->name('perguntas.edit');
-    Route::put('/atualizar/{id}', [PerguntaController::class, 'update'])->name('perguntas.update');
+    Route::get('/perguntas/editar/{id}', [PerguntaController::class, 'edit'])->name('perguntas.edit');
+    Route::put('/perguntas/atualizar/{id}', [PerguntaController::class, 'update'])->name('perguntas.update');
     Route::delete('/deletar/{id}', [PerguntaController::class, 'destroy'])->name('perguntas.destroy');
 });
 
