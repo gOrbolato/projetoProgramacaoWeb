@@ -2,20 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ApiResponse;
-use App\Models\Professore;
 use App\Models\Turma;
-use App\Rules\CpfRule;
-use App\Rules\PhoneRule;
+use App\Models\Coordenadore;
+use App\Models\Professore;
+use App\Models\Aluno;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class TurmaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $turmas = Turma::with([
@@ -26,37 +22,35 @@ class TurmaController extends Controller
             ->select('id', 'nome_turma', 'id_aluno', 'id_professor', 'id_coordenador')
             ->get();
 
-
-        return response()->json(ApiResponse::success(['turmas' =>  $turmas]), 200);
+        return view('turmas.index', compact('turmas'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-     public function create()
-     {
-        return view('turmas.create');
-     }
+    public function create()
+    {
+        $coordenadores = Coordenadore::select('id', 'nome')->get();
+        $professores = Professore::select('id', 'nome')->get();
+        $alunos = Aluno::select('id', 'name')->get();
 
-    /**
-     * Store a newly created resource in storage.
-     */
+        return view('turmas.create', compact('coordenadores', 'professores', 'alunos'));
+    }
     public function store(Request $request)
     {
         $validator = Validator::make($request->post(), [
-            'nome_turma' => ['required','string'],
+            'nome_turma' => ['required', 'string'],
             'id_aluno' => ['required', 'integer', 'exists:alunos,id'],
-            'id_professor' =>  ['required', 'integer', 'exists:professores,id'],
+            'id_professor' => ['required', 'integer', 'exists:professores,id'],
             'id_coordenador' => ['required', 'integer', 'exists:coordenadores,id'],
         ]);
 
         if ($validator->fails()) {
-            return response()->json(ApiResponse::fail($validator->errors()->messages()), 400);
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
         DB::beginTransaction();
         try {
-            $turma = Turma::create([
+            Turma::create([
                 'nome_turma' => strtoupper($request->nome_turma),
                 'id_aluno' => $request->id_aluno,
                 'id_professor' => $request->id_professor,
@@ -64,83 +58,70 @@ class TurmaController extends Controller
             ]);
 
             DB::commit();
-            return response()->json(ApiResponse::success(['turma' =>  $turma]), 200);
+            return redirect()->route('turmas.index');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return response()->json(ApiResponse::error('Falha ao criar turma', '0003'), 400);
+            return redirect()->back()
+                ->with('error', 'Falha ao criar turma')
+                ->withInput();
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
-        //
+        $turma = Turma::findOrFail($id);
+        return view('turmas.edit', compact('turma'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-        $request->merge(['id' => $id]);
         $validator = Validator::make($request->post(), [
-            'id' => ['required', 'string', 'exists:turmas,id'],
-            'nome_turma' => ['nullable','string'],
+            'nome_turma' => ['nullable', 'string'],
             'id_aluno' => ['nullable', 'integer', 'exists:alunos,id'],
             'id_professor' => ['nullable', 'integer', 'exists:professores,id'],
             'id_coordenador' => ['nullable', 'integer', 'exists:coordenadores,id'],
         ]);
 
         if ($validator->fails()) {
-            return response()->json(ApiResponse::fail($validator->errors()->messages()), 400);
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
+
         DB::beginTransaction();
         try {
-
-            $turma = Turma::find($request->id);
+            $turma = Turma::findOrFail($id);
 
             $turma->update([
-                'nome_turma' => strtoupper($request->nome_turma) ?? $turma->nome_turma,
+                'nome_turma' => strtoupper($request->nome_turma ?? $turma->nome_turma),
                 'id_aluno' => $request->id_aluno ?? $turma->id_aluno,
                 'id_professor' => $request->id_professor ?? $turma->id_professor,
                 'id_coordenador' => $request->id_coordenador ?? $turma->id_coordenador,
             ]);
 
             DB::commit();
-            return response()->json(ApiResponse::success(['turma' =>  $turma]), 200);
+            return redirect()->route('turmas.index');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return response()->json(ApiResponse::error('Falha ao atualizar Turma', '0003'), 400);
+            return redirect()->back()
+                ->with('error', 'Falha ao atualizar turma')
+                ->withInput();
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         DB::beginTransaction();
         try {
-
-            $turma = Turma::find($id);
-
+            $turma = Turma::findOrFail($id);
             $turma->delete();
 
             DB::commit();
-            return response()->json(ApiResponse::success(), 200);
+            return redirect()->route('turmas.index');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return response()->json(ApiResponse::error('Falha ao deletar turma', '0003'), 400);
+            return redirect()->back()
+                ->with('error', 'Falha ao deletar turma');
         }
     }
 }

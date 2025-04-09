@@ -85,7 +85,7 @@ class ProfessorController extends Controller
     {
         $professor = Professore::findOrFail($id);
         $coordenadores = Coordenadore::all(['id', 'nome']);
-        return view('professores.edit', compact('professor', 'coordenadores'));  
+        return view('professores.edit', compact('professor', 'coordenadores'));
     }
 
     /**

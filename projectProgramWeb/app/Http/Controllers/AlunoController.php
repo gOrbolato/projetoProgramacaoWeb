@@ -11,6 +11,7 @@ use App\Rules\PhoneRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class AlunoController extends Controller
 {
@@ -37,9 +38,9 @@ class AlunoController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->post(), [
-            'name' => ['required','string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
             'idade' => ['required', 'integer', 'max:200'],
-            'cpf' =>  ['required', 'string', new CpfRule(), 'unique:alunos,cpf,NULL,id,deleted_at,NULL'],
+            'cpf' => ['required', 'string', new CpfRule(), 'unique:alunos,cpf,NULL,id,deleted_at,NULL'],
             'telefone' => ['required', 'string', new PhoneRule(), 'unique:alunos,telefone,NULL,id,deleted_at,NULL'],
             'ano_letivo' => ['required', 'integer', 'digits:4']
         ]);
@@ -47,21 +48,23 @@ class AlunoController extends Controller
         if ($validator->fails()) {
             return response()->json(ApiResponse::fail($validator->errors()->messages()), 400);
         }
+
         DB::beginTransaction();
         try {
             $aluno = Aluno::create([
                 'name' => strtoupper($request->name),
                 'idade' => $request->idade,
-                'cpf' => str_replace(['.', '/', '-'], '', $request->cpf),
-                'telefone' => str_replace(['(', ')', '-', '.', ' '], '', $request->telefone),
+                'cpf' => $request->cpf,
+                'telefone' => $request->telefone,
                 'ano_letivo' => $request->ano_letivo
             ]);
 
             DB::commit();
-            return response()->json(ApiResponse::success(['aluno' =>  $aluno]), 200);
+            return response()->json(ApiResponse::success(['aluno' => $aluno]), 200);
         } catch (\Throwable $th) {
             DB::rollBack();
-            return response()->json(ApiResponse::error('Falha ao criar aluno', '0003'), 400);
+
+            return response()->json(ApiResponse::error($th->getMessage(), '0003'), 400);
         }
     }
 
@@ -76,9 +79,10 @@ class AlunoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $aluno = Aluno::findOrFail($id);
+        return view('alunos.edit', compact('aluno'));
     }
 
     /**
@@ -105,7 +109,7 @@ class AlunoController extends Controller
             $aluno = aluno::find($request->id);
 
             $aluno->update([
-                'name' => strtoupper($request->name ?? $aluno->telefone),
+                'name' => strtoupper($request->name ?? $aluno->name),
                 'idade' => $request->idade ?? $aluno->idade,
                 'cpf' => $request->cpf ?? $aluno->cpf,
                 'telefone' => $request->telefone ?? $aluno->telefone,

@@ -15,13 +15,6 @@
         </div>
     </div>
 
-    <!-- Feedback de Sucesso ou Erro -->
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
     @if (session('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             {{ session('error') }}
@@ -57,7 +50,7 @@
                                 <i class="fas fa-edit me-2"></i>Editar
                             </a>
                             <button type="button" class="btn btn-danger btn-sm btn-delete" data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                data-id="{{ $turma->id }}" data-nome="{{ $turma->nome_turma }}">
+                                    data-id="{{ $turma->id }}" data-nome="{{ $turma->nome_turma }}">
                                 <i class="fas fa-trash-alt me-2"></i>Excluir
                             </button>
                         </div>
@@ -67,7 +60,6 @@
         @endif
     </div>
 
-    <!-- Modal de Confirmação -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -80,7 +72,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <form id="delete-form" method="POST">
+                    <form id="delete-form" method="POST" onsubmit="return handleDelete(event, this.dataset.id)">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
@@ -90,37 +82,30 @@
         </div>
     </div>
 
-    <!-- Script para Animação de Exclusão -->
     <script>
         document.querySelectorAll('.btn-delete').forEach(button => {
             button.addEventListener('click', function () {
                 const turmaId = this.dataset.id;
                 const turmaNome = this.dataset.nome;
-
-                // Atualiza o modal com as informações da turma
                 document.getElementById('turma-nome').textContent = turmaNome;
                 document.getElementById('delete-form').action = `/turmas/${turmaId}`;
+                document.getElementById('delete-form').dataset.id = turmaId; // Armazena o ID no formulário
             });
         });
 
         function handleDelete(event, turmaId) {
-            event.preventDefault(); // Impede o envio do formulário imediatamente
-
+            event.preventDefault();
             const card = document.getElementById(`turma-${turmaId}`);
             if (!card) {
                 console.error(`Card com ID turma-${turmaId} não encontrado.`);
-                return;
+                return false;
             }
-
-            // Adiciona animação de fade-out
             card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
             card.style.opacity = '0';
             card.style.transform = 'scale(0.9)';
-
-            // Aguarda a animação terminar antes de enviar o formulário
             setTimeout(() => {
-                event.target.submit(); // Envia o formulário após a animação
-            }, 500); // 500ms corresponde à duração da animação
+                event.target.submit();
+            }, 500);
             return false;
         }
     </script>

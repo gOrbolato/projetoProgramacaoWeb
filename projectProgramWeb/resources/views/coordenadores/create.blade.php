@@ -12,13 +12,7 @@
             <p class="lead">Preencha os campos abaixo para adicionar um novo coordenador ao sistema.</p>
         </div>
 
-        <!-- Feedback de Sucesso ou Erro -->
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+        <!-- Feedback de Erro (mantido apenas para erro) -->
         @if (session('error'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 {{ session('error') }}
@@ -80,14 +74,32 @@
         </div>
     </div>
 
-    <!-- Script para Animações -->
+    <!-- Script para Animações e Máscaras -->
     <script>
+        // Máscara para o CPF
+        document.getElementById('cpf').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            e.target.value = value.substring(0, 14);
+        });
+
+        // Máscara para o Telefone
+        document.getElementById('telefone').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/(\d{2})(\d)/, '($1) $2');
+            value = value.replace(/(\d{5})(\d)/, '$1-$2');
+            e.target.value = value.substring(0, 15);
+        });
+
+        // Animação do botão de submit
         document.getElementById('create-coordenador-form').addEventListener('submit', function (event) {
             const button = document.getElementById('save-button');
             button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Salvando...';
             button.disabled = true;
 
-            // Após 1 segundo (simulando delay), reativa o botão (isso pode ser ajustado conforme necessário)
+            // Após 1 segundo (simulando delay), reativa o botão
             setTimeout(() => {
                 button.innerHTML = '<i class="fas fa-save me-2"></i>Salvar Coordenador';
                 button.disabled = false;

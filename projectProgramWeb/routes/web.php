@@ -17,8 +17,8 @@ Route::prefix('/perguntas')->group(function () {
     Route::get('/', [PerguntaController::class, 'index'])->name('perguntas.index');
     Route::get('/criar', [PerguntaController::class, 'create'])->name('perguntas.create');
     Route::post('/criar', [PerguntaController::class, 'store'])->name('perguntas.store');
-    Route::get('/perguntas/editar/{id}', [PerguntaController::class, 'edit'])->name('perguntas.edit');
-    Route::put('/perguntas/atualizar/{id}', [PerguntaController::class, 'update'])->name('perguntas.update');
+    Route::get('/editar/{id}', [PerguntaController::class, 'edit'])->name('perguntas.edit');
+    Route::put('/atualizar/{id}', [PerguntaController::class, 'update'])->name('perguntas.update');
     Route::delete('/deletar/{id}', [PerguntaController::class, 'destroy'])->name('perguntas.destroy');
 });
 
@@ -37,7 +37,7 @@ Route::prefix('/coordenadores')->group(function () {
     Route::post('/criar', [CoordenadorController::class, 'store'])->name('coordenadores.store');
     Route::get('/coordenadores/editar/{id}', [CoordenadorController::class, 'edit'])->name('coordenadores.edit');
     Route::put('/coordenadores/atualizar/{id}', [CoordenadorController::class, 'update'])->name('coordenadores.update');
-    Route::delete('/deletar/{id}', [CoordenadorController::class, 'destroy'])->name('coordenadores.destroy');
+    Route::delete('/{id}', [CoordenadorController::class, 'destroy'])->name('coordenadores.destroy'); // Corrigido de '/deletar/{id}' para '/{id}'
 });
 
 Route::prefix('/professores')->group(function () {
@@ -53,9 +53,9 @@ Route::prefix('/turmas')->group(function () {
     Route::get('/', [TurmaController::class, 'index'])->name('turmas.index');
     Route::get('/criar', [TurmaController::class, 'create'])->name('turmas.create');
     Route::post('/criar', [TurmaController::class, 'store'])->name('turmas.store');
-    Route::get('/turmas/editar/{id}', [TurmaController::class, 'edit'])->name('turmas.edit');
-    Route::put('/turmas/atualizar/{id}', [TurmaController::class, 'update'])->name('turmas.update');
-    Route::delete('/deletar/{id}', [TurmaController::class, 'destroy'])->name('turmas.destroy');
+    Route::get('/editar/{id}', [TurmaController::class, 'edit'])->name('turmas.edit');
+    Route::put('/atualizar/{id}', [TurmaController::class, 'update'])->name('turmas.update');
+    Route::delete('/{id}', [TurmaController::class, 'destroy'])->name('turmas.destroy'); // Corrigido de '/deletar/{id}' para '/{id}'
 });
 
 Route::prefix('/form-avaliacao')->group(function () {

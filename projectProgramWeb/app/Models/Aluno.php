@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Aluno
- * 
+ *
  * @property int $id
  * @property string $name
  * @property int $idade
@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $deleted_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property Collection|Turma[] $turmas
  * @property Collection|FormRespAvaliaco[] $form_resp_avaliacos
  *
@@ -40,7 +40,7 @@ class Aluno extends Model
 	];
 
 	protected $fillable = [
-		'nome',
+		'name',
 		'idade',
 		'cpf',
 		'telefone',
