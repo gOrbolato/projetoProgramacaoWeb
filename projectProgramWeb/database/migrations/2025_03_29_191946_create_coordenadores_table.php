@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('coordenadores', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->uuid('user_id')->index();
             $table->string('nome');
-            $table->string('cpf');
-            $table->string('telefone');
-            $table->integer('idade');
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('user_id', 'fk_users_coordenadores')->references('id')->on('users');
         });
     }
 
@@ -27,6 +27,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('alunos', function(Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
+        });
         Schema::dropIfExists('coordenadores');
     }
 };

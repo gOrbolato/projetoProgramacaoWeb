@@ -12,15 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('turmas', function (Blueprint $table) {
-            $table->id();
-            $table->string('nome_turma');
-            $table->unsignedBigInteger('id_aluno');
-            $table->unsignedBigInteger('id_professor');
-            $table->unsignedBigInteger('id_coordenador');
-
-            $table->foreign('id_aluno')->references('id')->on('alunos');
-            $table->foreign('id_professor')->references('id')->on('professores');
-            $table->foreign('id_coordenador')->references('id')->on('coordenadores');
+            $table->uuid('id')->primary();
+            $table->string('nome')->inde;
+            $table->date('ano_letivo');
 
             $table->softDeletes();
             $table->timestamps();
@@ -32,11 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('turmas', function (Blueprint $table) {
-            $table->dropForeign(['id_aluno']);
-            $table->dropForeign(['id_professor']);
-            $table->dropForeign(['id_coordenador']);
-        });
         Schema::dropIfExists('turmas');
     }
 };
